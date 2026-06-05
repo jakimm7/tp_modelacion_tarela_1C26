@@ -83,3 +83,31 @@ def leer_condiciones_iniciales(csv_path, fecha="2026-04-03", hora_min=4, hora_ma
                 x, y = parsear_float_europeo(cols[1]), parsear_float_europeo(cols[2])
                 vx, vy = parsear_float_europeo(cols[4]), parsear_float_europeo(cols[5])
                 return np.array([x, y]), np.array([vx, vy])
+            
+def imprimir_resultados(punto, descripcion, entradas):
+    SEP = "=" * 62
+    W = 36
+ 
+    print(SEP)
+    print(f"  PUNTO {punto}  -  {descripcion}")
+    print(SEP)
+ 
+    for item in entradas:
+        tipo = item[0]
+ 
+        if tipo == "seccion":
+            print(f"\n  -- {item[1]}")
+ 
+        elif tipo == "dato":
+            etiqueta = item[1]
+            valor = item[2]
+            unidad = item[3] if len(item) > 3 else ""
+            linea = f"{etiqueta:<{W}} {valor}"
+            if unidad:
+                linea += f"{unidad}"
+            print(linea)
+ 
+        elif tipo == "texto":
+            print(f"  {item[1]}")
+ 
+    print()
