@@ -25,6 +25,7 @@ EUC = "#ef5350"
 RKC = "#66bb6a"
 NYC = "#29b6f6"
 TC = "#eceff1"
+AM = "#ffeb3b"
 
 def calculo_orbita_lunar():
     N = 40_000
@@ -49,11 +50,12 @@ def calculo_orbita_lunar():
         trayectorias=[{"r": rl, "color": MC, "lw": 1.2, "label": "Órbita Lunar"}],
         titulo="Trayectoria (1 período)",
         puntos_extra=[
-            {"xy": (rl[pi_, 0], rl[pi_, 1]), "color": "#ff1744", "s": 60,
+            {"xy": (rl[pi_, 0], rl[pi_, 1]), "color": EUC, "s": 60,
              "label": f"Perigeo {dl.min():.0f} km"},
-            {"xy": (rl[ai_, 0], rl[ai_, 1]), "color": "#69f0ae", "s": 60,
+            {"xy": (rl[ai_, 0], rl[ai_, 1]), "color": NYC, "s": 60,
              "label": f"Apogeo {dl.max():.0f} km"},
         ],
+        loc_leyenda="upper right"
     )
  
     graficar_serie_temporal(
@@ -63,8 +65,8 @@ def calculo_orbita_lunar():
         ylabel="distancia [km]",
     )
     graficar_lineas_referencia(axes[1], [
-        {"y": R_PERIGEO, "color": "#ff1744", "label": f"{R_PERIGEO:.0f} km"},
-        {"y": R_APOGEO,  "color": "#69f0ae", "label": f"{R_APOGEO:.0f} km"},
+        {"y": R_PERIGEO, "color": EUC, "label": f"{R_PERIGEO:.0f} km"},
+        {"y": R_APOGEO,  "color": NYC, "label": f"{R_APOGEO:.0f} km"},
     ])
     axes[1].legend(fontsize=8)
  
@@ -146,9 +148,9 @@ def calculo_posicion_velocidad_orion(r0_orion, v0_orion):
         titulo=f"Free-Return Trajectory  (Δθ = {mejor_ang:.2f}°)",
         punto_luna=r_luna_fix,
         puntos_extra=[
-            {"xy": r0_orion,    "color": "#ffeb3b", "marker": "*", "s": 90,
+            {"xy": r0_orion,    "color": AM, "marker": "*", "s": 90,
              "label": "Orion t₀ (CSV)"},
-            {"xy": r_orion[-1], "color": "#e91e63", "marker": "v", "s": 90,
+            {"xy": r_orion[-1], "color": EUC, "marker": "v", "s": 90,
              "label": "Orion t_final"},
         ],
     )
@@ -165,7 +167,7 @@ def calculo_posicion_velocidad_orion(r0_orion, v0_orion):
         ylabel="distancia [10³ km]",
     )
     graficar_lineas_referencia(axes[1], [
-        {"y": 1.737, "color": "#ff1744", "ls": ":", "label": "R_Luna = 1 737 km"},
+        {"y": 1.737, "color": EUC, "ls": ":", "label": "R_Luna = 1 737 km"},
     ])
     axes[1].legend(fontsize=8)
  
@@ -254,6 +256,7 @@ def simulacion_orbita_lunar():
             {"r": r_rk5, "color": RKC, "lw": 0.5, "alpha": 0.7, "label": "RK2"},
         ],
         titulo="Trayectorias (6 períodos lunares)",
+        loc_leyenda="upper right"
     )
  
     graficar_serie_temporal(
@@ -318,6 +321,7 @@ def metodo_alternativo_nynstrom(r_eu5, v_eu5, r_rk5, v_rk5, E0, t5, N5, h5):
              "label": "Euler (espiral)"},
         ],
         titulo="Trayectorias (6 períodos)",
+        loc_leyenda="upper right"
     )
  
     graficar_serie_temporal(

@@ -1,5 +1,6 @@
 import numpy as np
 from pathlib import Path
+from graph.graph import configurar_estilo
 from utils.utils import leer_condiciones_iniciales, energia_mecanica, momento_angular, imprimir_resultados
 from calculos.calculos import calculo_orbita_lunar, calculo_posicion_velocidad_orion, calculo_euler_rk2, simulacion_orbita_lunar, metodo_alternativo_nynstrom
 
@@ -22,7 +23,7 @@ CSV_PATH = Path("./csv/Artemis_II_Data.csv")
 
 def main():
     print("TRABAJO PRACTICO - Trayectoria de la Cápsula Orion de la Misión Artemis II")
- 
+    configurar_estilo()
     r0_orion, v0_orion = leer_condiciones_iniciales(CSV_PATH)
  
     imprimir_resultados("CSV", "Condiciones iniciales (3 abril, 04:00-06:00 h)", [
