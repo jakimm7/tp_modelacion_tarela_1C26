@@ -1,10 +1,8 @@
-from pathlib import Path
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 import numpy as np
 
 BG = "#0a0e1a"
-GC = "#1e2a40"
+# GC = "#1e2a40"
 EC = "#2979ff"
 MC = "#b0bec5"
 TC = "#eceff1"
@@ -90,7 +88,7 @@ def caja_texto(ax, texto):
     ax.text(
         0.02, 0.97, texto,
         transform=ax.transAxes, va="top", fontsize=8,
-        bbox=dict(facecolor="#111827", edgecolor=GC, alpha=0.85),
+        bbox=dict(facecolor="#111827", edgecolor=TC, alpha=0.85),
     )
  
 def guardar_figura(fig, nombre_archivo, out_dir):
