@@ -1,7 +1,6 @@
 import numpy as np
 from pathlib import Path
-from utils.utils import acc_luna, leer_condiciones_iniciales, integrar_rk2, energia_mecanica, momento_angular, imprimir_resultados
-from graph.graph import configurar_estilo
+from utils.utils import leer_condiciones_iniciales, energia_mecanica, momento_angular, imprimir_resultados
 from calculos.calculos import calculo_orbita_lunar, calculo_posicion_velocidad_orion, calculo_euler_rk2, simulacion_orbita_lunar, metodo_alternativo_nynstrom
 
 G = 6.674e-20
@@ -21,22 +20,16 @@ V0_LUNA = np.array([0.0, V_PERI])
 
 CSV_PATH = Path("./csv/Artemis_II_Data.csv")
 
-def _dato(etiqueta, valor, unidad="", ancho_etiqueta=36):
-    """Imprime una fila de resultado con alineación uniforme."""
-    print(f"  {etiqueta:<{ancho_etiqueta}} {valor}  {unidad}".rstrip())
-
-
 def main():
     print("TRABAJO PRACTICO - Trayectoria de la Cápsula Orion de la Misión Artemis II")
-    configurar_estilo()
  
     r0_orion, v0_orion = leer_condiciones_iniciales(CSV_PATH)
  
     imprimir_resultados("CSV", "Condiciones iniciales (3 abril, 04:00-06:00 h)", [
-        ("dato", "Posicion inicial r0 [km]",     f"({r0_orion[0]:.2f}, {r0_orion[1]:.2f})"),
-        ("dato", "Velocidad inicial v0 [km/s]",  f"({v0_orion[0]:.5f}, {v0_orion[1]:.5f})"),
+        ("dato", "Posicion inicial r0 [km]", f"({r0_orion[0]:.2f}, {r0_orion[1]:.2f})"),
+        ("dato", "Velocidad inicial v0 [km/s]", f"({v0_orion[0]:.5f}, {v0_orion[1]:.5f})"),
         ("dato", "Distancia inicial a la Tierra", f"{np.linalg.norm(r0_orion):.2f}", "km"),
-        ("dato", "Modulo de v0",                  f"{np.linalg.norm(v0_orion):.5f}", "km/s"),
+        ("dato", "Modulo de v0", f"{np.linalg.norm(v0_orion):.5f}", "km/s"),
     ])
  
     rl, vl, dl, sl, ti, pi_, ai_ = calculo_orbita_lunar()

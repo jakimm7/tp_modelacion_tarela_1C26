@@ -18,8 +18,6 @@ T_LUNAR = 2.0 * np.pi * np.sqrt(A_LUNA**3 / GM_T)
 R0_LUNA = np.array([R_PERIGEO, 0.0])
 V0_LUNA = np.array([0.0, V_PERI])
 
-BG = "#0a0e1a"
-GC = "#1e2a40"
 EC = "#2979ff"
 MC = "#b0bec5"
 OC = "#ff6d00"

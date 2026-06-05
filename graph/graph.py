@@ -7,28 +7,7 @@ BG = "#0a0e1a"
 GC = "#1e2a40"
 EC = "#2979ff"
 MC = "#b0bec5"
-OC = "#ff6d00"
-EUC = "#ef5350"
-RKC = "#66bb6a"
-NYC = "#29b6f6"
 TC = "#eceff1"
-
-def configurar_estilo():
-    plt.rcParams.update({
-        "figure.facecolor":  BG,
-        "axes.facecolor":    BG,
-        "axes.edgecolor":    GC,
-        "axes.labelcolor":   TC,
-        "xtick.color":       TC,
-        "ytick.color":       TC,
-        "text.color":        TC,
-        "grid.color":        GC,
-        "grid.linestyle":    "--",
-        "grid.alpha":        0.5,
-        "legend.facecolor":  "#111827",
-        "legend.edgecolor":  GC,
-        "font.family":       "monospace",
-    })
 
 def crear_figura(n_cols, n_rows=1, titulo="", ancho=16, alto=5):
     fig, axes = plt.subplots(n_rows, n_cols, figsize=(ancho, alto))
