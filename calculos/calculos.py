@@ -16,9 +16,9 @@ from graph.graph import (
 
 OUT_DIR = Path("./graficos")
 
-NS_APENDICE_PTO_1 = [200, 400, 800, 1600, 3200, 6400, 12800, 25600, 51200]
+NS_APENDICE_PTO_1 = [200, 400, 800, 1600, 3200, 6400, 12800, 25600, 51200, 102400]
 NS_APENDICE_PTO_4 = [800, 1600, 3200, 6400, 12800, 25600, 51200, 102400]
-NS_APENDICE_PTO_5_6 = [3000, 6000, 12000, 24000, 48000, 96000, 192000]
+NS_APENDICE_PTO_5_6 = [3000, 6000, 12000, 24000, 48000, 96000, 192000, 384000]
 
 EXTENSION_GRAFICO = ".png"
 
@@ -28,6 +28,7 @@ NOMBRE_GRAFICO_CONV_LARGO_PLAZO = "Punto5b_Convergencia_LargoPlazo"
 NOMBRE_GRAFICO_CONV_ORION = "Punto4b_Convergencia_Orion"
 NOMBRE_GRAFICO_EULER_RK2 = "Punto4_Euler_vs_RK2"
 NOMBRE_GRAFICO_CALIBRACION = "Punto2_3_Efecto_Calibracion"
+NOMBRE_GRAFICO_LARGO_PLAZO = "Punto5_LargoPlazo_Inestabilidad"
 
 ANCHO_FIG = 8.5
 ALTO_FIG = 6.5
@@ -636,7 +637,7 @@ def punto5_largo_plazo():
     )
 
     fig.tight_layout()
-    guardar_figura(fig, F"{NOMBRE_GRAFICO_CONV_LARGO_PLAZO}{EXTENSION_GRAFICO}", OUT_DIR)
+    guardar_figura(fig, f"{NOMBRE_GRAFICO_LARGO_PLAZO}{EXTENSION_GRAFICO}", OUT_DIR)
     return r_eu5, v_eu5, r_rk5, v_rk5, E0, t5, N5, h5
 
 def apendice_punto5b_convergencia_largo_plazo():
