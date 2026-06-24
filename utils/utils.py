@@ -2,7 +2,7 @@ import numpy as np
 
 G = 6.674e-20
 M_T = 5.972e24
-M_L = 7.348e22 
+M_L = 7.348e22
 GM_T = G * M_T
 GM_L = G * M_L
 
@@ -65,6 +65,12 @@ def integrar_nystrom(r0, v0, acc_fn, h, N, **kw):
         a = a_next
     return rs, vs
 
+INTEGRADORES = {
+    "euler": integrar_euler,
+    "rk2": integrar_rk2,
+    "nystrom": integrar_nystrom,
+}
+
 def parsear_float_europeo(s):
     return float(s.replace(",", "."))
 
@@ -83,21 +89,21 @@ def leer_condiciones_iniciales(csv_path, fecha="2026-04-03", hora_min=4, hora_ma
                 x, y = parsear_float_europeo(cols[1]), parsear_float_europeo(cols[2])
                 vx, vy = parsear_float_europeo(cols[4]), parsear_float_europeo(cols[5])
                 return np.array([x, y]), np.array([vx, vy])
-            
+
 def imprimir_resultados(punto, descripcion, entradas):
     SEP = "=" * 62
     W = 36
- 
+
     print(SEP)
     print(f"  PUNTO {punto}  -  {descripcion}")
     print(SEP)
- 
+
     for item in entradas:
         tipo = item[0]
- 
+
         if tipo == "seccion":
             print(f"\n  -- {item[1]}")
- 
+
         elif tipo == "dato":
             etiqueta = item[1]
             valor = item[2]
@@ -106,8 +112,69 @@ def imprimir_resultados(punto, descripcion, entradas):
             if unidad:
                 linea += f"{unidad}"
             print(linea)
- 
+
         elif tipo == "texto":
             print(f"  {item[1]}")
- 
+
     print()
+
+def imprimir_tabla(encabezados, filas, anchos=None):
+    if anchos is None:
+        anchos = [max(len(str(h)), *(len(str(f[i])) for f in filas)) + 2
+                  for i, h in enumerate(encabezados)]
+    linea_sep = "-" * (sum(anchos) + len(anchos) - 1)
+    print(linea_sep)
+    print("|".join(f"{str(h):^{a}}" for h, a in zip(encabezados, anchos)))
+    print(linea_sep)
+    for f in filas:
+        print("|".join(f"{str(v):^{a}}" for v, a in zip(f, anchos)))
+    print(linea_sep)
+
+def estudio_convergencia_periodico(r0, v0, acc_fn, integrador, T, Ns, **kw):
+    hs = np.empty(len(Ns))
+    errores = np.empty(len(Ns))
+    for i, N in enumerate(Ns):
+        h = T / N
+        r, _ = integrador(r0, v0, acc_fn, h, N, **kw)
+        hs[i] = h
+        errores[i] = np.linalg.norm(r[-1] - r0)
+    return hs, errores
+
+def estudio_convergencia_referencia(r0, v0, acc_fn, integrador, T, Ns, r_ref, **kw):
+    hs = np.empty(len(Ns))
+    errores = np.empty(len(Ns))
+    for i, N in enumerate(Ns):
+        h = T / N
+        r, _ = integrador(r0, v0, acc_fn, h, N, **kw)
+        hs[i] = h
+        errores[i] = np.linalg.norm(r[-1] - r_ref)
+    return hs, errores
+
+def ajustar_orden_loglog(hs, errores):
+    hs = np.asarray(hs, dtype=float)
+    errores = np.asarray(errores, dtype=float)
+    mask = (errores > 0) & np.isfinite(errores) & (hs > 0)
+    pendiente, _ = np.polyfit(np.log(hs[mask]), np.log(errores[mask]), 1)
+    return pendiente
+
+def orden_local(hs, errores):
+    errores = np.asarray(errores, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        razon = errores[:-1] / errores[1:]
+        p = np.log2(razon)
+    return p
+
+def radio_min_max_por_periodo(r, n_periodos):
+    N = r.shape[0] - 1
+    paso = N // n_periodos
+    resultados = []
+    for k in range(1, n_periodos + 1):
+        ini = (k - 1) * paso
+        fin = k * paso + 1
+        d = np.linalg.norm(r[ini:fin], axis=1)
+        resultados.append((d.min(), d.max()))
+    return resultados
+
+def indices_por_periodo(N_total, n_periodos):
+    paso = N_total // n_periodos
+    return [k * paso for k in range(1, n_periodos + 1)]
